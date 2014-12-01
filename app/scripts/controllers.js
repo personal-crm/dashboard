@@ -13,13 +13,14 @@ angular.module('app')
   data.status = {
     form: 'login',
     loading: false,
-    error: ''
+    error: '',
+    success: ''
   };
 
 
   fn.login = function(){
-    console.log('login');
     data.status.loading = true;
+    data.status.error = '';
     AuthSrv.login(data.credentials).then(function(user){
       data.status.loading = false;
       $state.go('user.home');
@@ -30,10 +31,27 @@ angular.module('app')
     });
   };
   fn.recover = function(){
-    console.log('recover');
+    data.status.loading = true;
+    data.status.error = '';
+    AuthSrv.passwordRecover(data.credentials).then(function(){
+      data.status.loading = false;
+      data.status.success = 'Check your inbox for password recovery !';
+    }, function(error){
+      data.status.loading = false;
+      data.status.error = error.message;
+    });
   };
   fn.signup = function(){
-    console.log('signup');
+    data.status.loading = true;
+    data.status.error = '';
+    AuthSrv.signup(data.credentials).then(function(user){
+      data.status.loading = false;
+      $state.go('user.home');
+    }, function(error){
+      data.credentials.password = '';
+      data.status.loading = false;
+      data.status.error = error.message;
+    });
   };
 })
 
