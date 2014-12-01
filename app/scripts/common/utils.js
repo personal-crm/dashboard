@@ -1,6 +1,6 @@
 angular.module('app')
 
-.factory('Utils', function($timeout, $q){
+.factory('Utils', function($timeout, $q, $sce){
   'use strict';
   var service = {
     createUuid: createUuid,
@@ -11,6 +11,7 @@ angular.module('app')
     randInt: randInt,
     async: async,
     debounce: debounce,
+    trustHtml: trustHtml,
     extendDeep: extendDeep,
     extendsWith: extendsWith,
     sort: sort
@@ -56,6 +57,10 @@ angular.module('app')
     debounces[key] = $timeout(function(){
       callback();
     }, _debounceTime || 1000);
+  }
+
+  function trustHtml(html){
+    return $sce.trustAsHtml(html);
   }
 
   function extendDeep(dest){
@@ -130,7 +135,7 @@ angular.module('app')
       return (aBool === bBool ? 0 : (aBool ? -1 : 1)) * (params.desc ? -1 : 1);
     });
   }
-  
+
   function _getDeep(obj, attrs, _defaultValue){
     if(Array.isArray(attrs) && attrs.length > 0){
       if(typeof obj === 'object'){
