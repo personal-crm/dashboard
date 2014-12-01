@@ -2,23 +2,38 @@ angular.module('app')
 
 .controller('LoginCtrl', function ($scope, $state, AuthSrv){
   'use strict';
-  $scope.credentials = {
+  var data = {}, fn = {};
+  $scope.data = data;
+  $scope.fn = fn;
+
+  data.credentials = {
     email: '',
-    password: '',
+    password: ''
+  };
+  data.status = {
+    form: 'login',
     loading: false,
     error: ''
   };
 
-  $scope.login = function(){
-    $scope.credentials.loading = true;
-    AuthSrv.login($scope.credentials).then(function(user){
-      $scope.credentials.loading = false;
+
+  fn.login = function(){
+    console.log('login');
+    data.status.loading = true;
+    AuthSrv.login(data.credentials).then(function(user){
+      data.status.loading = false;
       $state.go('user.home');
     }, function(error){
-      $scope.credentials.password = '';
-      $scope.credentials.loading = false;
-      $scope.credentials.error = error.message;
+      data.credentials.password = '';
+      data.status.loading = false;
+      data.status.error = error.message;
     });
+  };
+  fn.recover = function(){
+    console.log('recover');
+  };
+  fn.signup = function(){
+    console.log('signup');
   };
 })
 
