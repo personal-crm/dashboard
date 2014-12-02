@@ -10,8 +10,8 @@ var Config = (function(){
     emailSupport: '',
     backendUrl: '',
     parse: {
-      applicationId: 'Qm1ixHWM9SenQ7fUkW5zlZarg4YUU4pKQcHcVSYp',
-      restApiKey: 'MiQdMKC1zHduz5nq6CvJGqaD0kgp5ODVc8RNeAxT'
+      applicationId: 'YOUR_PARSE_APPLICATION_ID',
+      restApiKey: 'YOUR_PARSE_REST_API_KEY'
     }
   };
   return cfg;
