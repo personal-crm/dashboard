@@ -149,7 +149,11 @@ angular.module('app')
     });
   }
 
-  // /!\ Searches not providing first and last name have results limited to the member's immediate network only (1st or 2nd degree connections)
+  /*
+   * /!\
+   * You must have Linkedin approval to perform people searches : https://developer.linkedin.com/documents/people-search-api
+   * Moreover: Searches not providing first and last name have results limited to the member's immediate network only (1st or 2nd degree connections)
+   */
   function getPeopleSearch(fields, searchParams){
     return _libLoaded(function(){
       var defer = $q.defer();
