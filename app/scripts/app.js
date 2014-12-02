@@ -76,6 +76,11 @@ angular.module('app', ['ngCookies', 'LocalForageModule', 'ui.router', 'ui.bootst
     url: '/contacts',
     templateUrl: 'views/contacts/main.html',
     controller: 'ContactsCtrl'
+  })
+  .state('user.linkedin', {
+    url: '/linkedin',
+    templateUrl: 'views/integrations/linkedin.html',
+    controller: 'LinkedinCtrl'
   });
 
   $urlRouterProvider.otherwise('/');

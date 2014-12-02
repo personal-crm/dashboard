@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <h1>Linkedin intégration !</h1>
+      <form role="form">
+        <div class="form-group">
+          <label for="apiKey">Enter your api key to connect with linkedin :</label>
+          <input type="text" class="form-control" id="apiKey" name="apiKey" placeholder="Your Linkedin Api key" ng-model="data.api.key">
+          <p class="help-block">
+            You can create one in <a href="https://www.linkedin.com/secure/developer" target="linkedin">Linkedin developper section</a>.<br>
+            Don't forget to add <code>http://localhost:9000</code> to allowed domains (last section)
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="apiScope">Choose api scope :</label>
+          <select multiple class="form-control" id="apiScope" name="apiScope" ng-model="data.api.scope" ng-options="scope for scope in data.scopes" size="9"></select>
+          <p class="help-block">See <a href="https://developer.linkedin.com/documents/authentication#granting" target="linkedin">Linkedin documentation</a> for more infos.</p>
+        </div>
+        <button type="submit" class="btn btn-default pull-right" ng-disabled="data.status.loading" ng-click="fn.loadAndConnectToLinkedin()">
+          <i class="fa fa-spinner fa-spin" ng-show="data.status.loading"></i>
+          Load Linkedin library & login
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6" ng-if="data.profile">
+    <div class="card">
+      <div>
+        <img ng-src="{{data.profile.pictureUrl}}" class="pull-left">
+        <h3>Hello {{data.profile.firstName}} {{data.profile.lastName}} !</h3>
+        <h5>{{data.profile.headline}}</h5>
+        <div class="clearfix"></div>
+      </div>
+      <br>
+      <p>See Javascript console for a lot more infos :)</p>
+    </div>
+
+    <rd-loading ng-show="!data.connections"></rd-loading>
+    <div class="widget" ng-show="data.connections">
+      <div class="widget-header">
+        <i class="fa fa-users"></i> You have {{data.connections.values.length}} connections !
+        <input type="text" class="form-control input-sm pull-right" placeholder="Search ..." ng-model="search">
+        <div class="clearfix"></div>
+      </div>
+      <div class="widget-body large no-padding">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Headline</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="connection in filtered = (data.connections.values | filter:search)">
+                <td><img ng-src="{{connection.pictureUrl}}" style="max-height: 50px;"></td>
+                <td>{{connection.firstName}} {{connection.lastName}}</td>
+                <td>{{connection.headline}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

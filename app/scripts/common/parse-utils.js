@@ -2,14 +2,14 @@ angular.module('app')
 
 .provider('ParseUtils', function(){
   'use strict';
-  var parseCredentials = {
+  var credentials = {
     applicationId: null,
     restApiKey: null
   };
 
   this.initialize = function(applicationId, restApiKey) {
-    parseCredentials.applicationId = applicationId;
-    parseCredentials.restApiKey = restApiKey;
+    credentials.applicationId = applicationId;
+    credentials.restApiKey = restApiKey;
   };
 
   this.$get = ['$http', '$q', 'CrudRestUtils', function($http, $q, CrudRestUtils){
@@ -22,8 +22,8 @@ angular.module('app')
     var parseUrl = 'https://api.parse.com/1';
     var parseHttpConfig = {
       headers: {
-        'X-Parse-Application-Id': parseCredentials.applicationId,
-        'X-Parse-REST-API-Key': parseCredentials.restApiKey
+        'X-Parse-Application-Id': credentials.applicationId,
+        'X-Parse-REST-API-Key': credentials.restApiKey
       }
     };
 
