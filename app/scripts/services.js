@@ -21,16 +21,21 @@ angular.module('app')
     userRoles: routingConfig.userRoles
   };
   getCurrent().then(function(user){
+    //userCrud = CrudRestUtils.createCrud('/users');
     userCrud = ParseUtils.createUserCrud(user.sessionToken);
   });
-  
+
   function getCurrent(){ return StorageUtils.get(storageKey, defaultUser); }
   function getCurrentSync(){ return StorageUtils.getSync(storageKey, defaultUser); }
-  
+
   function saveUser(user){
-    return userCrud.save(user).then(function(){
+    if(userCrud){
+      return userCrud.save(user).then(function(){
+        return StorageUtils.set(storageKey, user);
+      });
+    } else {
       return StorageUtils.set(storageKey, user);
-    });
+    }
   }
 
   function isAuthorized(accessLevel, _role){
@@ -74,11 +79,6 @@ angular.module('app')
     }
   }
 
-  function _signupProxy(user){
-    //return $q.when(user);
-    return ParseUtils.signup(user);
-  }
-
   function login(credentials){
     if(credentials.email && credentials.password){
       return _loginProxy(credentials.email, credentials.password).then(function(user){
@@ -93,11 +93,6 @@ angular.module('app')
     }
   }
 
-  function _loginProxy(email, password){
-    //return $q.when({ email: email, username: email, role: routingConfig.userRoles.user });
-    return ParseUtils.login(email, password);
-  }
-
   function passwordRecover(credentials){
     if(credentials.email){
       return _passwordRecoverProxy(credentials.email).then(null, function(err){
@@ -108,13 +103,23 @@ angular.module('app')
     }
   }
 
+  function logout(){
+    return StorageUtils.remove(storageKey);
+  }
+
+  function _signupProxy(user){
+    //return $q.when(user);
+    return ParseUtils.signup(user);
+  }
+
+  function _loginProxy(email, password){
+    //return $q.when({ email: email, username: email, role: routingConfig.userRoles.user });
+    return ParseUtils.login(email, password);
+  }
+
   function _passwordRecoverProxy(email){
     //return $q.when();
     return ParseUtils.passwordRecover(email);
-  }
-
-  function logout(){
-    return StorageUtils.remove(storageKey);
   }
 
   return service;
