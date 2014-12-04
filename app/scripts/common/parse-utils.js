@@ -15,6 +15,7 @@ angular.module('app')
   this.$get = ['$http', '$q', 'CrudRestUtils', function($http, $q, CrudRestUtils){
     var service = {
       createCrud: createCrud,
+      createUserCrud: createUserCrud,
       signup: signup,
       login: login,
       passwordRecover: passwordRecover
@@ -41,6 +42,24 @@ angular.module('app')
       };
 
       return CrudRestUtils.createCrud(endpointUrl, objectKey, _getData, _processBreforeSave, _useCache, parseHttpConfig);
+    }
+
+    function createUserCrud(sessionToken, _processBreforeSave, _useCache){
+      var endpointUrl = parseUrl+'/users';
+      var objectKey = 'objectId';
+      var _getData = function(result){
+        if(result && result.data){
+          if(!result.data[objectKey] && result.data.results){
+            return result.data.results;
+          } else {
+            return result.data;
+          }
+        }
+      };
+      var parseUserHttpConfig = angular.copy(parseHttpConfig);
+      parseUserHttpConfig.headers['X-Parse-Session-Token'] = sessionToken;
+
+      return CrudRestUtils.createCrud(endpointUrl, objectKey, _getData, _processBreforeSave, _useCache, parseUserHttpConfig);
     }
 
     // user MUST have fields 'username' and 'password'. The first one should be unique, application wise.

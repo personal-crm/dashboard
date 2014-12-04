@@ -1,6 +1,12 @@
 angular.module('app')
 
-.controller('LinkedinCtrl', function($scope, LinkedinSrv, Config){
+.controller('LinkedinScraperCtrl', function($scope, Config){
+  var url = Config.linkedin.scraperUrl;
+})
+
+
+.controller('LinkedinApiCtrl', function($scope, LinkedinSrv, Config){
+  'use strict';
   var data = {}, fn = {};
   $scope.data = data;
   $scope.fn = fn;
@@ -187,7 +193,7 @@ angular.module('app')
   function _linkedinLibLoadedFail(reason){
     console.error('Fail to load linkedin lib ('+reason+') !!!');
     libLoaded.reject();
-  };
+  }
 
   return service;
 });

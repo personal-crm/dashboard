@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <form role="form" ng-submit="fn.saveSecrets()">
+        <div class="form-group">
+          <label for="linkedinApiKey">Linkedin Api Key :</label>
+          <input type="text" class="form-control" id="linkedinApiKey" name="linkedinApiKey" ng-model="data.secrets.linkedinApiKey.value" placeholder="ex: 7ops8jdwo2fopf">
+          <p class="help-block">To connect to linkedin api and get more infos</p>
+        </div>
+        <div class="form-group" 
+             ng-class="{'has-feedback': data.secrets.linkedinScraperUrl.checked !== undefined, 'has-success': data.secrets.linkedinScraperUrl.checked === true, 'has-error': data.secrets.linkedinScraperUrl.checked === false}">
+          <label for="linkedinScraperUrl">Linkedin Scaper Url :</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="linkedinScraperUrl" name="linkedinScraperUrl" ng-model="data.secrets.linkedinScraperUrl.value" placeholder="ex: http://localhost:9000">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-disabled="data.secrets.linkedinScraperUrl.loading || !data.secrets.linkedinScraperUrl.value" ng-click="fn.check('linkedinScraperUrl')">
+                <i class="fa fa-spinner fa-spin" ng-show="data.secrets.linkedinScraperUrl.loading"></i>
+                Check Url
+              </button>
+            </span>
+          </div>
+          <span class="glyphicon glyphicon-ok form-control-feedback" style="margin-right: 100px;" ng-show="data.secrets.linkedinScraperUrl.checked === true"></span>
+          <span class="glyphicon glyphicon-remove form-control-feedback" style="margin-right: 100px;" ng-show="data.secrets.linkedinScraperUrl.checked === false"></span>
+          <p class="help-block">To scrape linkedin and discover interesting people</p>
+          <p class="help-block" ng-show="data.secrets.linkedinScraperUrl.error">{{data.secrets.linkedinScraperUrl.error}}</p>
+        </div>
+        <button type="submit" class="btn btn-default" ng-disabled="data.savingUser">
+          <i class="fa fa-spinner fa-spin" ng-show="data.savingUser"></i>
+          Save
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <pre>{{data.user | json}}</pre>
+      <pre>{{data.secrets | json}}</pre>
+    </div>
+  </div>
+</div>

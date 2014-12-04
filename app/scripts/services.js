@@ -1,11 +1,13 @@
 angular.module('app')
 
 
-.factory('AuthSrv', function($q, $http, ParseUtils, StorageUtils){
+.factory('UserSrv', function($q, $http, ParseUtils, StorageUtils){
   'use strict';
   var storageKey = 'user';
   var defaultUser = { username: '', role: routingConfig.userRoles.public };
+  var userCrud = null;
   var service = {
+    getCurrent: getCurrent,
     isAuthorized: isAuthorized,
     isAuthorizedAsync: isAuthorizedAsync,
     isLoggedIn: isLoggedIn,
@@ -14,27 +16,40 @@ angular.module('app')
     login: login,
     passwordRecover: passwordRecover,
     logout: logout,
+    saveUser: saveUser,
     accessLevels: routingConfig.accessLevels,
     userRoles: routingConfig.userRoles
   };
+  getCurrent().then(function(user){
+    userCrud = ParseUtils.createUserCrud(user.sessionToken);
+  });
+  
+  function getCurrent(){ return StorageUtils.get(storageKey, defaultUser); }
+  function getCurrentSync(){ return StorageUtils.getSync(storageKey, defaultUser); }
+  
+  function saveUser(user){
+    return userCrud.save(user).then(function(){
+      return StorageUtils.set(storageKey, user);
+    });
+  }
 
   function isAuthorized(accessLevel, _role){
-    var role = _role !== undefined ? _role : StorageUtils.getSync(storageKey, defaultUser).role;
+    var role = _role !== undefined ? _role : getCurrentSync().role;
     return accessLevel.bitMask & role.bitMask;
   }
   function isAuthorizedAsync(accessLevel, _role){
-    var rolePromise = _role !== undefined ? $q.when(_role) : StorageUtils.get(storageKey, defaultUser).then(function(user){ return user.role; });
+    var rolePromise = _role !== undefined ? $q.when(_role) : getCurrent().then(function(user){ return user.role; });
     return rolePromise.then(function(role){
       return accessLevel.bitMask & role.bitMask;
     });
   }
 
   function isLoggedIn(_user){
-    var user = _user !== undefined ? _user : StorageUtils.getSync(storageKey, defaultUser);
+    var user = _user !== undefined ? _user : getCurrentSync();
     return user.role && user.role.title !== routingConfig.userRoles.public.title;
   }
   function isLoggedInAsync(_user){
-    var userPromise = _user !== undefined ? $q.when(_user) : StorageUtils.get(storageKey, defaultUser);
+    var userPromise = _user !== undefined ? $q.when(_user) : getCurrent();
     return userPromise.then(function(user){
       return user.role && user.role.title !== routingConfig.userRoles.public.title;
     });

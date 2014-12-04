@@ -58,7 +58,7 @@ angular.module('app')
         return $q.when();
       }
     } else {
-      console.debug('Don\'t save <'+key+'> because values are equals !');
+      console.debug('Don\'t save <'+key+'> because values are equals !', value);
       return $q.when();
     }
   }
