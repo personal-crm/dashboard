@@ -87,6 +87,7 @@ angular.module('app')
         role: routingConfig.userRoles.user
       }).then(function(user){
         return StorageUtils.set(storageKey, user).then(function(){
+          userCrud = ParseUtils.createUserCrud(user.sessionToken);
           return user;
         });
       }, function(err){
@@ -101,6 +102,7 @@ angular.module('app')
     if(credentials.email && credentials.password){
       return _loginProxy(credentials.email, credentials.password).then(function(user){
         return StorageUtils.set(storageKey, user).then(function(){
+          userCrud = ParseUtils.createUserCrud(user.sessionToken);
           return user;
         });
       }, function(err){
