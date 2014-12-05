@@ -19,15 +19,18 @@
               </button>
             </span>
           </div>
-          <span class="glyphicon glyphicon-ok form-control-feedback" style="margin-right: 100px;" ng-show="data.secrets.linkedinScraperUrl.checked === true"></span>
-          <span class="glyphicon glyphicon-remove form-control-feedback" style="margin-right: 100px;" ng-show="data.secrets.linkedinScraperUrl.checked === false"></span>
+          <span class="glyphicon glyphicon-ok form-control-feedback" style="right: 100px;" ng-show="data.secrets.linkedinScraperUrl.checked === true"></span>
+          <span class="glyphicon glyphicon-remove form-control-feedback" style="right: 100px;" ng-show="data.secrets.linkedinScraperUrl.checked === false"></span>
           <p class="help-block">To scrape linkedin and discover interesting people</p>
           <p class="help-block" ng-show="data.secrets.linkedinScraperUrl.error">{{data.secrets.linkedinScraperUrl.error}}</p>
         </div>
-        <button type="submit" class="btn btn-default" ng-disabled="data.savingUser">
-          <i class="fa fa-spinner fa-spin" ng-show="data.savingUser"></i>
-          Save
-        </button>
+        <div ng-class="{'has-error': !!data.form.error}">
+          <button type="submit" class="btn btn-default" ng-disabled="data.form.saving || !data.form.updated">
+            <i class="fa fa-spinner fa-spin" ng-show="data.form.saving"></i>
+            Save
+          </button>
+          <p class="help-block" ng-show="data.form.error">{{data.form.error}}</p>
+        </div>
       </form>
     </div>
   </div>

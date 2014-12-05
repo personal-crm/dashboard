@@ -74,6 +74,11 @@ angular.module('app')
   UserSrv.getCurrent().then(function(user){
     data.user = user;
     data.secrets = angular.copy(user.secrets);
+    data.form = {
+      updated: false,
+      saving: false,
+      error: ''
+    };
     $scope.$watch('data.secrets.linkedinScraperUrl.value', function(val, old){
       if(val !== old){
         if(val){
@@ -82,6 +87,14 @@ angular.module('app')
         } else if(data.secrets){
           delete data.secrets.linkedinScraperUrl;
         }
+        data.form.error = '';
+        data.form.updated = !angular.equals(data.secrets, data.user.secrets);
+      }
+    });
+    $scope.$watch('data.secrets.linkedinApiKey.value', function(val, old){
+      if(val !== old){
+        data.form.error = '';
+        data.form.updated = !angular.equals(data.secrets, data.user.secrets);
       }
     });
   });
@@ -107,11 +120,16 @@ angular.module('app')
   };
 
   fn.saveSecrets = function(){
-    data.savingUser = true;
-    if(!data.user.secrets){ data.user.secrets = {}; }
-    angular.copy(data.secrets, data.user.secrets);
-    UserSrv.saveUser(data.user).then(function(){
-      data.savingUser = false;
+    data.form.saving = true;
+    UserSrv.savePartialUser({secrets: data.secrets}).then(function(user){
+      data.user = user;
+      data.form.saving = false;
+      data.form.updated = !angular.equals(data.secrets, data.user.secrets);
+      data.form.error = '';
+    }, function(err){
+      data.form.saving = false;
+      data.form.updated = !angular.equals(data.secrets, data.user.secrets);
+      data.form.error = 'Error: check your network connexion';
     });
   };
 });

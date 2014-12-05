@@ -22,6 +22,7 @@ I didn't found a CRM that fit my needs, so I coded my own :D
     - [Linkedin](https://developer.linkedin.com/apis) (see [angular-linkedin-directive](https://github.com/feedthefire/angular-linkedin-directive), [resume-linkedin](https://github.com/mblarsen/resume-linkedin), [linkedin-to-json-resume](https://github.com/JMPerez/linkedin-to-json-resume), [angular-linkedin](https://github.com/eucuepo/angular-linkedin), [linkedin-angularjs](https://github.com/zeddotes/linkedin-angularjs), [sna-js](https://github.com/craigtutterow/sna-js), [linkedin-visualizer](https://github.com/pdhodgkinson/linkedin-visualizer), [CloudCodeOAuthLinkedTutorial](https://github.com/simonaberry/CloudCodeOAuthLinkedTutorial))
     - Gmail
     - Mandrill
+- download data as csv : https://github.com/asafdav/ng-csv
 - linkedin newtwork cartography & research
 
 ## Feedback
