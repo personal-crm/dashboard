@@ -1,7 +1,7 @@
 angular.module('app')
 
-.controller('LinkedinScraperCtrl', function($scope, Config){
-  var url = Config.linkedin.scraperUrl;
+.controller('LinkedinScraperCtrl', function($scope){
+
 })
 
 
@@ -12,6 +12,7 @@ angular.module('app')
   $scope.fn = fn;
 
   data.scopes = ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'w_messages', 'rw_groups', 'rw_nus', 'rw_company_admin'];
+  // TODO: get apiKey from user !
   data.api = {
     key: Config.linkedin ? Config.linkedin.apiKey : '',
     scope: ['r_fullprofile', 'r_emailaddress', 'r_network']
