@@ -7,8 +7,8 @@ I didn't found a CRM that fit my needs, so I coded my own :D
 
 ## Getting started
 
-- clone the repo `git clone git@github.com:loicknuchel/networking-crm.git`
-- go to project folder `cd networking-crm`
+- clone the repo `git clone git@github.com:personal-crm/dashboard.git`
+- go to project folder `cd dashboard`
 - rename `app/scripts/_config-sample.js` to `app/scripts/_config.js` and add your parse keys
 - run `npm install`
 - run `bower install`
