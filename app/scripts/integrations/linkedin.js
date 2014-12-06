@@ -17,9 +17,51 @@ angular.module('app')
       }
     });
   };
+  service.scrape = function(backendUrl, startUrl, ignoreUrls){
+    // TODO : ignoreUrls !!!
+    return $http.get(backendUrl+'/api/v1/scrapers/linkedin/profiles/related?startUrl='+encodeURI(startUrl)+'&max=20').then(function(result){
+      if(result && result.data && result.data.data && result.data.data.scraped){
+        return result.data.data.scraped;
+      }
+    });
+  };
   service.getWithId   = function(id)  { return service.findOne({id: id});   };
   service.getWithUrl  = function(url) { return service.findOne({url: url}); };
   return service;
+})
+
+.controller('LinkedinScraperCtrl', function($scope, UserSrv, LinkedinSrv){
+  var data = {}, fn = {};
+  $scope.data = data;
+  $scope.fn = fn;
+
+  data.scraper = {
+    startUrl: '',
+    scraping: false,
+    results: []
+  };
+
+  UserSrv.getCurrent().then(function(user){
+    data.user = user;
+  });
+
+  fn.scrape = function(startUrl){
+    data.scraper.scraping = true;
+    delete data.scraper.error;
+    LinkedinSrv.scrape(data.user.secrets.linkedinScraperUrl.value, startUrl).then(function(results){
+      data.scraper.results = data.scraper.results.concat(results);
+      data.scraper.scraping = false;
+    }, function(err){
+      console.log('err', err);
+      data.scraper.error = 'error in scraping :(';
+      data.scraper.scraping = false;
+    });
+  };
+  fn.addToTargets = function(profile){
+    profile._meta = {loading: true};
+
+    delete profile._meta;
+  };
 })
 
 .factory('LinkedinApiSrv', function($q, $timeout, $window){
@@ -144,10 +186,6 @@ angular.module('app')
   }
 
   return service;
-})
-
-.controller('LinkedinScraperCtrl', function($scope){
-
 })
 
 .controller('LinkedinApiCtrl', function($scope, LinkedinApiSrv, Config){

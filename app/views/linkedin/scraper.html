@@ -1,7 +1,30 @@
 <div class="row">
   <div class="col-md-6">
     <div class="card">
-      <h1>Enter the scraper url</h1>
+      <form role="form">
+        <div class="row">
+          <div class="col-md-10" ng-class="{'has-error': !!data.scraper.error}">
+            <input type="url" class="form-control" ng-model="data.scraper.startUrl" placeholder="Url of linkedin profile to scrape from" ng-disabled="data.scraper.scraping">
+            <p class="help-block" ng-show="data.scraper.error">{{data.scraper.error}}</p>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-default" ng-disabled="!data.scraper.startUrl || !data.user.secrets.linkedinScraperUrl.value || data.scraper.scraping" ng-click="fn.scrape(data.scraper.startUrl)">
+              <i class="fa fa-spinner fa-spin" ng-show="data.scraper.scraping"></i>
+              Scrape
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div ng-show="data.scraper.results.length > 0">
+        <linkedin-search-result ng-repeat="profile in data.scraper.results" elt="profile">
+          <button class="btn btn-success pull-right" ng-click="fn.addToTargets(profile)" ng-disabled="profile._meta.loading">
+            <i class="fa fa-plus" ng-show="!profile._meta.loading"></i>
+            <i class="fa fa-spinner fa-spin" ng-show="profile._meta.loading"></i>
+            Add to targets
+          </button>
+        </linkedin-search-result>
+      </div>
     </div>
   </div>
 </div>
