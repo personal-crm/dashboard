@@ -225,9 +225,9 @@ angular.module('app')
   return {
     restrict: 'E',
     templateUrl: 'views/linkedin/partials/search-result.html',
+    transclude: true,
     scope: {
-      elt: '=',
-      associate: '&'
+      elt: '='
     }
   };
 });
