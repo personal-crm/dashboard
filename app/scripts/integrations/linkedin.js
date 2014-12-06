@@ -5,7 +5,7 @@ angular.module('app')
 })
 
 
-.controller('LinkedinApiCtrl', function($scope, LinkedinSrv, Config){
+.controller('LinkedinApiCtrl', function($scope, LinkedinApiSrv, Config){
   'use strict';
   var data = {}, fn = {};
   $scope.data = data;
@@ -56,15 +56,15 @@ angular.module('app')
 
   fn.loadAndConnectToLinkedin = function(){
     data.status.loading = true;
-    LinkedinSrv.loadLibrary(data.api.key, data.api.scope).then(function(){
-      return LinkedinSrv.connect();
+    LinkedinApiSrv.loadLibrary(data.api.key, data.api.scope).then(function(){
+      return LinkedinApiSrv.connect();
     }).then(function(){
-      LinkedinSrv.getProfile('me', profileFields).then(function(profile){
+      LinkedinApiSrv.getProfile('me', profileFields).then(function(profile){
         data.status.loading = false;
         console.log('profile', profile);
         data.profile = profile;
       });
-      LinkedinSrv.getConnections(profileFields).then(function(connections){
+      LinkedinApiSrv.getConnections(profileFields).then(function(connections){
         console.log('connections', connections);
         data.connections = connections;
       });
@@ -75,7 +75,7 @@ angular.module('app')
   };
 })
 
-.factory('LinkedinSrv', function($q, $timeout, $window){
+.factory('LinkedinApiSrv', function($q, $timeout, $window){
   'use strict';
   var libLoaded, onLoaded;
   var service = {

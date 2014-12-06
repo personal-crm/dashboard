@@ -1,9 +1,34 @@
 <div>
   <h4 class="card-heading">Contact {{elt.objectId}}</h4>
   <div>
-    First Name: {{elt.firstName}}<br>
-    Last Name: {{elt.lastName}}<br>
+    <span ng-show="elt.image"><img ng-src="{{elt.image}}"><br></span>
+    <span ng-show="elt.firstName">First Name: {{elt.firstName}}<br></span>
+    <span ng-show="elt.lastName">Last Name: {{elt.lastName}}<br></span>
+    <span ng-show="elt.headline">Headline: {{elt.headline}}<br></span>
     Email: <a href="mailto:{{elt.email}}">{{elt.email}}</a><br>
-    Account: <account-name id="elt.accountId"></account-name><br>
+    <span ng-show="elt.accountId">Account: <account-name id="elt.accountId"></account-name><br></span>
+  </div>
+  <div>
+    <button class="btn btn-default" ng-disabled="data.linkedin.loading" ng-click="fn.findOnLinkedin(elt)" ng-show="data.user.secrets.linkedinScraperUrl.value && elt.firstName && elt.lastName && !elt.social.linkedin">
+      <i class="fa fa-spinner fa-spin" ng-show="data.linkedin.loading"></i>
+      Find on linkedin
+    </button>
+    <a class="btn btn-info" ng-href="{{elt.social.linkedin.url}}" target="linkedin" ng-show="elt.social.linkedin"><i class="fa fa-linkedin"></i></a>
+  </div>
+  <div ng-show="data.linkedin.results">
+    Résultats linkedin :
+    <div class="media" ng-repeat="profile in data.linkedin.results">
+      <button class="btn btn-success pull-right" ng-click="fn.associateWithLinkedin(profile)" ng-disabled="profile._meta.loading">
+        <i class="fa fa-exchange" ng-show="!profile._meta.loading"></i>
+        <i class="fa fa-spinner fa-spin" ng-show="profile._meta.loading"></i>
+        Associate with contact
+      </button>
+      <a class="media-left"><img ng-src="{{profile.image}}" style="width: 60px;"></a>
+      <div class="media-body">
+        <h4 class="media-heading">{{profile.firstName}} {{profile.lastName}}</h4>
+        <small>{{profile.location}}</small><br>
+        {{profile.headline}}
+      </div>
+    </div>
   </div>
 </div>

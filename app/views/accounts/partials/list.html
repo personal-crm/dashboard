@@ -13,11 +13,13 @@
         <thead>
           <tr>
             <th sort="crud.data.currentSort" name="name" ng-click="crud.fn.sort('name')">Name</th>
+            <th>Email format</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="elt in filtered = (crud.data.elts | filter:search)" ng-click="crud.fn.toggle(elt)" ng-class="{active: crud.data.selectedElt && elt.objectId === crud.data.selectedElt.objectId}">
             <td>{{elt.name}}</td>
+            <td>{{elt.emailFormat}}</td>
           </tr>
         </tbody>
       </table>
