@@ -41,7 +41,7 @@ angular.module('app')
 
 .controller('ContactsCtrl', function($scope, CrudRestUtils, ContactSrv, AccountSrv){
   'use strict';
-  var defaultSort = {};
+  var defaultSort = {order: 'lastName'};
   var defaultFormElt = {};
   $scope.crud = CrudRestUtils.createCrudCtrl(ContactSrv, defaultSort, defaultFormElt);
   $scope.cache = ContactSrv.cache;
@@ -100,7 +100,7 @@ angular.module('app')
   };
 })
 
-.directive('contactForm', function(AccountSrv){
+.directive('contactForm', function(AccountSrv, DataList){
   'use strict';
   return {
     restrict: 'E',
@@ -111,6 +111,7 @@ angular.module('app')
     link: function(scope, element, attr){
       var data = {};
       scope.data = data;
+      data.statuses = DataList.contactStatuses;
       AccountSrv.getAll().then(function(accounts){
         data.accounts = accounts;
       });

@@ -111,6 +111,9 @@ angular.module('app', ['ngCookies', 'LocalForageModule', 'ui.router', 'ui.bootst
 })
 
 .constant('Config', Config)
+.constant('DataList', {
+  contactStatuses: ['target', 'contact', 'prospect', 'client']
+})
 
 .run(function($rootScope, $state, $window, UserSrv, LogSrv, Utils){
   'use strict';
