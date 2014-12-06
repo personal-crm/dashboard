@@ -2,7 +2,7 @@ angular.module('app')
 
 .factory('AccountSrv', function(ParseUtils){
   'use strict';
-  return ParseUtils.createCrud('/classes/Account', null, true);
+  return ParseUtils.createCrud('/classes/Account');
 })
 
 .controller('AccountsCtrl', function($scope, CrudRestUtils, AccountSrv){

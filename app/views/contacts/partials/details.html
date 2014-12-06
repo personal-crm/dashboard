@@ -9,7 +9,7 @@
     <span ng-show="elt.accountId">Account: <account-name id="elt.accountId"></account-name><br></span>
   </div>
   <div>
-    <button class="btn btn-default" ng-disabled="data.linkedin.loading" ng-click="fn.findOnLinkedin(elt)" ng-show="data.user.secrets.linkedinScraperUrl.value && elt.firstName && elt.lastName && !elt.social.linkedin">
+    <button class="btn btn-default" ng-disabled="data.linkedin.loading" ng-click="fn.findOnLinkedin(elt)" ng-show="elt.firstName && elt.lastName && !elt.social.linkedin && data.user.secrets.linkedinScraperUrl.value && !data.linkedin.results">
       <i class="fa fa-spinner fa-spin" ng-show="data.linkedin.loading"></i>
       Find on linkedin
     </button>
@@ -17,18 +17,6 @@
   </div>
   <div ng-show="data.linkedin.results">
     Résultats linkedin :
-    <div class="media" ng-repeat="profile in data.linkedin.results">
-      <button class="btn btn-success pull-right" ng-click="fn.associateWithLinkedin(profile)" ng-disabled="profile._meta.loading">
-        <i class="fa fa-exchange" ng-show="!profile._meta.loading"></i>
-        <i class="fa fa-spinner fa-spin" ng-show="profile._meta.loading"></i>
-        Associate with contact
-      </button>
-      <a class="media-left"><img ng-src="{{profile.image}}" style="width: 60px;"></a>
-      <div class="media-body">
-        <h4 class="media-heading">{{profile.firstName}} {{profile.lastName}}</h4>
-        <small>{{profile.location}}</small><br>
-        {{profile.headline}}
-      </div>
-    </div>
+    <linkedin-search-result ng-repeat="profile in data.linkedin.results" elt="profile" associate="fn.associateWithLinkedin(profile)"></linkedin-search-result>
   </div>
 </div>

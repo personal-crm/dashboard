@@ -79,12 +79,12 @@ angular.module('app', ['ngCookies', 'LocalForageModule', 'ui.router', 'ui.bootst
   })
   .state('user.linkedinApi', {
     url: '/linkedin-api',
-    templateUrl: 'views/integrations/linkedin-api.html',
+    templateUrl: 'views/linkedin/api.html',
     controller: 'LinkedinApiCtrl'
   })
   .state('user.linkedinScraper', {
     url: '/linkedin-scraper',
-    templateUrl: 'views/integrations/linkedin-scraper.html',
+    templateUrl: 'views/linkedin/scraper.html',
     controller: 'LinkedinScraperCtrl'
   })
   .state('user.profile', {

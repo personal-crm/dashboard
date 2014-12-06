@@ -1,78 +1,25 @@
 angular.module('app')
 
-.controller('LinkedinScraperCtrl', function($scope){
-
-})
-
-
-.controller('LinkedinApiCtrl', function($scope, LinkedinApiSrv, Config){
+.factory('LinkedinSrv', function($http, ParseUtils){
   'use strict';
-  var data = {}, fn = {};
-  $scope.data = data;
-  $scope.fn = fn;
-
-  data.scopes = ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'w_messages', 'rw_groups', 'rw_nus', 'rw_company_admin'];
-  // TODO: get apiKey from user !
-  data.api = {
-    key: Config.linkedin ? Config.linkedin.apiKey : '',
-    scope: ['r_fullprofile', 'r_emailaddress', 'r_network']
-  };
-  data.status = {
-    loading: false
-  };
-
-  // see https://developer.linkedin.com/documents/profile-fields
-  var profileFields = [
-    // basic profile
-    'id',
-    'picture-url',
-    'first-name',
-    'last-name',
-    'headline',
-    'location',
-    'industry',
-    'summary',
-    'specialties',
-    'positions',
-    'num-connections',
-    'relation-to-viewer',
-    // with permission r_emailaddress
-    'email-address',
-    // with permission r_fullprofile
-    'last-modified-timestamp',
-    'associations',
-    'interests',
-    'publications',
-    'skills',
-    'certifications',
-    'educations',
-    'courses',
-    'recommendations-received',
-    'following',
-    'date-of-birth',
-    // with permission r_network
-    'connections'
-  ];
-
-  fn.loadAndConnectToLinkedin = function(){
-    data.status.loading = true;
-    LinkedinApiSrv.loadLibrary(data.api.key, data.api.scope).then(function(){
-      return LinkedinApiSrv.connect();
-    }).then(function(){
-      LinkedinApiSrv.getProfile('me', profileFields).then(function(profile){
-        data.status.loading = false;
-        console.log('profile', profile);
-        data.profile = profile;
-      });
-      LinkedinApiSrv.getConnections(profileFields).then(function(connections){
-        console.log('connections', connections);
-        data.connections = connections;
-      });
-    }, function(err){
-      data.status.loading = false;
-      console.error(err);
+  var service = ParseUtils.createCrud('/classes/Linkedin');
+  service.search = function(backendUrl, firstName, lastName){
+    return $http.get(backendUrl+'/api/v1/scrapers/linkedin/profiles/search?firstName='+encodeURIComponent(firstName)+'&lastName='+encodeURIComponent(lastName)).then(function(result){
+      if(result && result.data && result.data.data && result.data.data.results){
+        return result.data.data.results;
+      }
     });
   };
+  service.fetch = function(backendUrl, profileUrl){
+    return $http.get(backendUrl+'/api/v1/scrapers/linkedin/profile?url='+encodeURI(profileUrl)).then(function(result){
+      if(result && result.data && result.data.data){
+        return result.data.data;
+      }
+    });
+  };
+  service.getWithId   = function(id)  { return service.findOne({id: id});   };
+  service.getWithUrl  = function(url) { return service.findOne({url: url}); };
+  return service;
 })
 
 .factory('LinkedinApiSrv', function($q, $timeout, $window){
@@ -197,4 +144,90 @@ angular.module('app')
   }
 
   return service;
+})
+
+.controller('LinkedinScraperCtrl', function($scope){
+
+})
+
+.controller('LinkedinApiCtrl', function($scope, LinkedinApiSrv, Config){
+  'use strict';
+  var data = {}, fn = {};
+  $scope.data = data;
+  $scope.fn = fn;
+
+  data.scopes = ['r_basicprofile', 'r_fullprofile', 'r_emailaddress', 'r_network', 'r_contactinfo', 'w_messages', 'rw_groups', 'rw_nus', 'rw_company_admin'];
+  // TODO: get apiKey from user !
+  data.api = {
+    key: Config.linkedin ? Config.linkedin.apiKey : '',
+    scope: ['r_fullprofile', 'r_emailaddress', 'r_network']
+  };
+  data.status = {
+    loading: false
+  };
+
+  // see https://developer.linkedin.com/documents/profile-fields
+  var profileFields = [
+    // basic profile
+    'id',
+    'picture-url',
+    'first-name',
+    'last-name',
+    'headline',
+    'location',
+    'industry',
+    'summary',
+    'specialties',
+    'positions',
+    'num-connections',
+    'relation-to-viewer',
+    // with permission r_emailaddress
+    'email-address',
+    // with permission r_fullprofile
+    'last-modified-timestamp',
+    'associations',
+    'interests',
+    'publications',
+    'skills',
+    'certifications',
+    'educations',
+    'courses',
+    'recommendations-received',
+    'following',
+    'date-of-birth',
+    // with permission r_network
+    'connections'
+  ];
+
+  fn.loadAndConnectToLinkedin = function(){
+    data.status.loading = true;
+    LinkedinApiSrv.loadLibrary(data.api.key, data.api.scope).then(function(){
+      return LinkedinApiSrv.connect();
+    }).then(function(){
+      LinkedinApiSrv.getProfile('me', profileFields).then(function(profile){
+        data.status.loading = false;
+        console.log('profile', profile);
+        data.profile = profile;
+      });
+      LinkedinApiSrv.getConnections(profileFields).then(function(connections){
+        console.log('connections', connections);
+        data.connections = connections;
+      });
+    }, function(err){
+      data.status.loading = false;
+      console.error(err);
+    });
+  };
+})
+
+.directive('linkedinSearchResult', function(){
+  'use strict';
+  return {
+    restrict: 'E',
+    templateUrl: 'views/linkedin/partials/search-result.html',
+    scope: {
+      elt: '=',
+      associate: '&'
+    }
+  };
 });

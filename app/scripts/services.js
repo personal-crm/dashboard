@@ -23,7 +23,7 @@ angular.module('app')
   };
   getCurrent().then(function(user){
     //userCrud = CrudRestUtils.createCrud('/users');
-    userCrud = ParseUtils.createUserCrud(user.sessionToken, null, true);
+    userCrud = ParseUtils.createUserCrud(user.sessionToken);
   });
 
   function getCurrent(){ return StorageUtils.get(storageKey, defaultUser); }
