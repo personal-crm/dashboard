@@ -30,7 +30,7 @@ angular.module('app')
   return service;
 })
 
-.controller('LinkedinScraperCtrl', function($scope, UserSrv, LinkedinSrv){
+.controller('LinkedinScraperCtrl', function($scope, UserSrv, LinkedinSrv, ContactSrv){
   var data = {}, fn = {};
   $scope.data = data;
   $scope.fn = fn;
@@ -44,8 +44,13 @@ angular.module('app')
   UserSrv.getCurrent().then(function(user){
     data.user = user;
   });
+  data.contacts = [];
+  ContactSrv.getAll().then(function(contacts){
+    data.contacts = contacts;
+  });
 
   fn.scrape = function(startUrl){
+    data.scraper.startUrl = startUrl;
     data.scraper.scraping = true;
     delete data.scraper.error;
     LinkedinSrv.scrape(data.user.secrets.linkedinScraperUrl.value, startUrl).then(function(results){

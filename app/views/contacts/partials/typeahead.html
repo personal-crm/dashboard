@@ -1,0 +1,4 @@
+<a>
+  <img ng-src="{{match.model.image}}" width="16">
+  <span bind-html-unsafe="match.model.firstName+' '+match.model.lastName | typeaheadHighlight:query"></span>
+</a>
