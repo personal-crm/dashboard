@@ -19,7 +19,6 @@ angular.module('app')
   };
   service.scrape = function(backendUrl, startUrl, _ignoreUrls){
     var ignoreUrls = _ignoreUrls || [];
-    console.log('ignoreUrls', ignoreUrls);
     return $http.post(backendUrl+'/api/v1/scrapers/linkedin/profiles/related?startUrl='+encodeURI(startUrl)+'&max=20', {ignore: ignoreUrls}).then(function(result){
       if(result && result.data && result.data.data && result.data.data.scraped){
         return result.data.data.scraped;
@@ -54,6 +53,38 @@ angular.module('app')
     data.scraper.startUrl = startUrl;
     data.scraper.scraping = true;
     delete data.scraper.error;
+    var ignoreUrls = getIgnoreUrls();
+    LinkedinSrv.scrape(data.user.secrets.linkedinScraperUrl.value, startUrl, ignoreUrls).then(function(results){
+      for(var i in results){
+        if(!_.find(data.scraper.results, {id: results[i].id})){
+          data.scraper.results.push(results[i]);
+        }
+      }
+      data.scraper.scraping = false;
+    }, function(err){
+      console.log('err', err);
+      data.scraper.error = 'error in scraping :(';
+      data.scraper.scraping = false;
+    });
+  };
+  fn.addToTargets = function(profile){
+    if(!profile._meta){ profile._meta = {}; }
+    profile._meta.loading = true;
+    ContactSrv.addSocialProfile({status: 'target'}, 'linkedin', profile).then(function(saved){
+      profile._meta.saved = saved;
+      profile._meta.added = true;
+      delete profile._meta.loading;
+    });
+  };
+  fn.removeFromTargets = function(profile){
+    if(!profile._meta){ profile._meta = {}; }
+    profile._meta.loading = true;
+    ContactSrv.remove(profile._meta.saved).then(function(){
+      delete profile._meta;
+    });
+  };
+
+  function getIgnoreUrls(){
     var ignoreUrls = [];
     for(var i in data.contacts){
       if(data.contacts[i].social && data.contacts[i].social.linkedin && data.contacts[i].social.linkedin.url){
@@ -70,25 +101,8 @@ angular.module('app')
         ignoreUrls.push(data.scraper.results[k].url);
       }
     }
-    ignoreUrls = _.uniq(ignoreUrls);
-    LinkedinSrv.scrape(data.user.secrets.linkedinScraperUrl.value, startUrl, ignoreUrls).then(function(results){
-      for(var i in results){
-        if(!_.find(data.scraper.results, {id: results[i].id})){
-          data.scraper.results.push(results[i]);
-        }
-      }
-      data.scraper.scraping = false;
-    }, function(err){
-      console.log('err', err);
-      data.scraper.error = 'error in scraping :(';
-      data.scraper.scraping = false;
-    });
-  };
-  fn.addToTargets = function(profile){
-    profile._meta = {loading: true};
-
-    delete profile._meta;
-  };
+    return _.uniq(ignoreUrls);
+  }
 })
 
 .factory('LinkedinApiSrv', function($q, $timeout, $window){

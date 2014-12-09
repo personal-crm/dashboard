@@ -13,6 +13,7 @@
           <div class="col-md-2">
             <button type="submit" class="btn btn-default" ng-disabled="!data.scraper.startUrl || !data.user.secrets.linkedinScraperUrl.value || data.scraper.scraping" ng-click="fn.scrape(data.scraper.startUrl)">
               <i class="fa fa-spinner fa-spin" ng-show="data.scraper.scraping"></i>
+              <i class="fa fa-search" ng-show="!data.scraper.scraping"></i>
               Scrape
             </button>
           </div>
@@ -23,12 +24,19 @@
       <div ng-show="data.scraper.results.length > 0" style="max-height: 650px; overflow: auto; margin-right: -7px; padding-right: 7px; margin-bottom: -10px;">
         <linkedin-search-result ng-repeat="profile in data.scraper.results" elt="profile">
           <div style="position: absolute; right: 0;">
-            <button class="btn btn-success" ng-click="fn.addToTargets(profile)" ng-disabled="profile._meta.loading">
+            <button class="btn btn-success" ng-disabled="profile._meta.loading" ng-show="!profile._meta.added" ng-click="fn.addToTargets(profile)">
               <i class="fa fa-plus" ng-show="!profile._meta.loading"></i>
               <i class="fa fa-spinner fa-spin" ng-show="profile._meta.loading"></i>
               Add to targets
             </button>
-            <button class="btn btn-default" ng-disabled="!data.user.secrets.linkedinScraperUrl.value || profile.relatedProfiles.length === 0 || data.scraper.scraping" ng-click="fn.scrape(profile.url)">Scrape more</button>
+            <button class="btn btn-danger" ng-disabled="profile._meta.loading" ng-show="profile._meta.added" ng-click="fn.removeFromTargets(profile)">
+              <i class="fa fa-minus" ng-show="!profile._meta.loading"></i>
+              <i class="fa fa-spinner fa-spin" ng-show="profile._meta.loading"></i>
+              Remove from targets
+            </button>
+            <button class="btn btn-default" title="Scrape more" ng-disabled="!data.user.secrets.linkedinScraperUrl.value || profile.relatedProfiles.length === 0 || data.scraper.scraping" ng-click="fn.scrape(profile.url)">
+              <i class="fa fa-search"></i>
+            </button>
           </div>
         </linkedin-search-result>
       </div>

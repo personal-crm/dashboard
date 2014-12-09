@@ -11,7 +11,11 @@ angular.module('app')
     if(provider === 'linkedin'){
       promise = LinkedinSrv.getWithId(profile.id).then(function(parseProfile){
         if(parseProfile){ return parseProfile; }
-        else { return LinkedinSrv.save(profile); }
+        else {
+          var profileToSave = angular.copy(profile);
+          delete profileToSave._meta;
+          return LinkedinSrv.save(profileToSave);
+        }
       }).then(function(parseProfile){
         if(!toSave.image)       { toSave.image = profile.image;                }
         if(!toSave.firstName)   { toSave.firstName = profile.firstName;        }
@@ -33,11 +37,17 @@ angular.module('app')
 
     return promise.then(function(){
       return service.save(toSave);
-    }).then(function(){
-      return toSave;
     });
   };
-  // TODO : service.removeSocialProfile = function(elt, provider)
+  service.removeSocialProfile = function(elt, provider){
+    if(elt && elt.social && elt.social[provider]){
+      var toSave = angular.copy(elt);
+      delete toSave.social[provider];
+      return service.save(toSave);
+    } else {
+      return $q.when(angular.copy(elt));
+    }
+  };
   return service;
 })
 
