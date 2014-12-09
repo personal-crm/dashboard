@@ -93,7 +93,7 @@ angular.module('app')
   };
 })
 
-.directive('contact', function(UserSrv, ContactSrv, LinkedinSrv, $http){
+.directive('contact', function(UserSrv, ContactSrv, LinkedinSrv, Utils, $http){
   'use strict';
   return {
     restrict: 'E',
@@ -102,6 +102,8 @@ angular.module('app')
       elt: '='
     },
     link: function(scope, element, attr){
+      scope.trustHtml = Utils.trustHtml;
+
       var data = {}, fn = {};
       scope.data = data;
       scope.fn = fn;

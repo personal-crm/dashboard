@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-7">
     <div ng-include="'views/contacts/partials/list.html'"></div>
   </div>
 
-  <div class="col-md-6" ng-show="crud.data.selectedElt && !crud.data.form">
+  <div class="col-md-5" ng-show="crud.data.selectedElt && !crud.data.form">
     <div class="card">
       <span class="pull-right">
         <a class="btn btn-xs btn-info" ng-click="crud.fn.edit(crud.data.selectedElt)"><i class="fa fa-pencil-square-o"></i></a>
@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div class="col-md-6" ng-show="crud.data.form">
+  <div class="col-md-5" ng-if="crud.data.form">
     <form ng-submit="crud.fn.save()">
       <div class="card">
         <contact-form elt="crud.data.form"></contact-form>

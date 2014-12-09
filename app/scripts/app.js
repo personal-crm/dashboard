@@ -1,4 +1,4 @@
-angular.module('app', ['ngCookies', 'LocalForageModule', 'ui.router', 'ui.bootstrap', 'ngQuill', 'colorpicker.module'])
+angular.module('app', ['ngCookies', 'LocalForageModule', 'ui.router', 'ui.utils', 'ui.bootstrap', 'ngQuill', 'colorpicker.module'])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider, $provide, ParseUtilsProvider, Config){
   'use strict';

@@ -1,19 +1,14 @@
 <div class="form-horizontal">
   <div class="form-group">
-    <label for="firstName" class="control-label col-md-2">First Name :</label>
-    <div class="col-md-10">
-      <input type="text" class="form-control" id="firstName" name="firstName" ng-model="elt.firstName" required>
+    <label for="firstName" class="control-label col-md-3">Name :</label>
+    <div class="form-inline col-md-9">
+      <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" ng-model="elt.firstName" required>
+      <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" ng-model="elt.lastName" required>
     </div>
   </div>
   <div class="form-group">
-    <label for="lastName" class="control-label col-md-2">Last Name :</label>
-    <div class="col-md-10">
-      <input type="text" class="form-control" id="lastName" name="lastName" ng-model="elt.lastName" required>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="active" class="control-label col-md-2">Active :</label>
-    <div class="col-md-10">
+    <label for="active" class="control-label col-md-3">Active :</label>
+    <div class="col-md-9">
       <div class="btn-group">
         <button class="btn btn-default" type="button" ng-model="elt.active" btn-radio="true">Active</button>
         <button class="btn btn-default" type="button" ng-model="elt.active" btn-radio="false">Inactive</button>
@@ -21,25 +16,43 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="status" class="control-label col-md-2">Status :</label>
-    <div class="col-md-10">
+    <label for="status" class="control-label col-md-3">Status :</label>
+    <div class="col-md-9">
       <div class="btn-group">
         <button class="btn btn-default" type="button" ng-repeat="status in data.statuses" ng-model="elt.status" btn-radio="status">{{status}}</button>
       </div>
     </div>
   </div>
   <div class="form-group">
-    <label for="email" class="control-label col-md-2">Email :</label>
-    <div class="col-md-10">
+    <label for="email" class="control-label col-md-3">Email :</label>
+    <div class="col-md-9">
       <input type="email" class="form-control" id="email" name="email" ng-model="elt.email">
     </div>
   </div>
   <div class="form-group">
-    <label for="account" class="control-label col-md-2">Account :</label>
-    <div class="col-md-10">
+    <label for="phone" class="control-label col-md-3">Phone :</label>
+    <div class="col-md-9">
+      <input type="tel" class="form-control" id="phone" name="phone" ng-model="elt.phone" ui-mask="99.99.99.99.99">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="account" class="control-label col-md-3">Account :</label>
+    <div class="col-md-9">
       <select id="account" name="account" class="form-control" ng-model="elt.accountId" ng-options="account.objectId as account.name for account in data.accounts">
         <option value="">--</option>
       </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="firstContact" class="control-label col-md-3">First Contact :</label>
+    <div class="col-md-9">
+      <ng-quill-editor ng-model="elt.firstContactHTML" toolbar="true"></ng-quill-editor>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="currentStatus" class="control-label col-md-3">Current Status :</label>
+    <div class="col-md-9">
+      <ng-quill-editor ng-model="elt.currentStatusHTML" toolbar="true"></ng-quill-editor>
     </div>
   </div>
 </div>

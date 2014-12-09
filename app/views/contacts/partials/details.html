@@ -6,7 +6,10 @@
     <span ng-show="elt.lastName">Last Name: {{elt.lastName}}<br></span>
     <span ng-show="elt.headline">Headline: {{elt.headline}}<br></span>
     Email: <a href="mailto:{{elt.email}}">{{elt.email}}</a><br>
+    Phone: {{elt.phone | phone}}<br>
     <span ng-show="elt.accountId">Account: <account-name id="elt.accountId"></account-name><br></span>
+    First Contact: <div class="well" ng-bind-html="trustHtml(elt.firstContactHTML)" ng-show="elt.firstContactHTML" style="margin-bottom: 0px;"></div><br ng-show="!elt.firstContactHTML">
+    Current Status: <div class="well" ng-bind-html="trustHtml(elt.currentStatusHTML)" ng-show="elt.currentStatusHTML" style="margin-bottom: 0px;"></div><br ng-show="!elt.currentStatusHTML">
   </div>
   <div>
     <button class="btn btn-default" ng-disabled="data.linkedin.loading" ng-click="fn.findOnLinkedin(elt)" ng-show="elt.firstName && elt.lastName && !elt.social.linkedin && data.user.secrets.linkedinScraperUrl.value && !data.linkedin.results">

@@ -14,9 +14,10 @@
           <tr>
             <th class="no-select" ng-click="fn.toggleAll()"><i class="fa" ng-class="{'fa-square-o': fn.isNoneSelected(), 'fa-check-square-o': fn.isAllSelected(), 'fa-minus-square-o': fn.isSomeSelected()}"></i></th>
             <th sort="crud.data.currentSort" name="status" ng-click="crud.fn.sort('status')">Status</th>
+            <th></th>
             <th sort="crud.data.currentSort" name="lastName" ng-click="crud.fn.sort('lastName')">Name</th>
-            <th sort="crud.data.currentSort" name="email" ng-click="crud.fn.sort('email')">Email</th>
             <th sort="crud.data.currentSort" name="accountId" ng-click="crud.fn.sort('accountId')">Account</th>
+            <th>Contact</th>
             <th>Social</th>
           </tr>
         </thead>
@@ -30,9 +31,10 @@
                 {{elt.status}}
               </span>
             </td>
+            <td><div ng-bind-html="trustHtml(elt.currentStatusHTML)"></div></td>
             <td><img ng-src="{{elt.image}}" style="height: 34px; margin-top: -8px; margin-bottom: -8px;"> {{elt.firstName}} {{elt.lastName}}</td>
-            <td><a href="mailto:{{elt.email}}">{{elt.email}}</a></td>
             <td><account-name id="elt.accountId"></account-name></td>
+            <td><a href="mailto:{{elt.email}}">{{elt.email}}</a> {{elt.phone | phone}}</td>
             <td>
               <a ng-href="{{elt.social.linkedin.url}}" target="linkedin" ng-show="elt.social.linkedin"><i class="fa fa-linkedin"></i></a>
             </td>

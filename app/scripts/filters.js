@@ -53,6 +53,17 @@ angular.module('app')
   };
 })
 
+.filter('phone', function(){
+  'use strict';
+  return function(phone){
+    if(phone && phone.match(/[0-9]{10}/)){
+      return phone.replace(/([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})/, '$1.$2.$3.$4.$5');
+    } else {
+      return phone;
+    }
+  };
+})
+
 .filter('rating', function($filter){
   'use strict';
   return function(rating, max, withText){
