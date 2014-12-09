@@ -23,7 +23,8 @@ angular.module('app')
         toSave.social[provider] = {
           parseId: parseProfile.objectId,
           id: profile.id,
-          url: profile.canonicalUrl
+          url: profile.canonicalUrl,
+          urls: [profile.canonicalUrl, profile.url]
         };
       });
     } else {
@@ -36,6 +37,7 @@ angular.module('app')
       return toSave;
     });
   };
+  // TODO : service.removeSocialProfile = function(elt, provider)
   return service;
 })
 

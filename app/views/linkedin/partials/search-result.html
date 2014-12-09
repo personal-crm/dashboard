@@ -1,6 +1,6 @@
-<div class="media">
+<div class="media" style="position: relative;">
   <div ng-transclude></div>
-  <a class="media-left"><img ng-src="{{elt.image}}" style="width: 60px;"></a>
+  <a class="media-left" ng-href="{{elt.url}}" target="_blank"><img ng-src="{{elt.image}}" style="width: 60px;"></a>
   <div class="media-body">
     <h4 class="media-heading">{{elt.firstName}} {{elt.lastName}}</h4>
     <small>{{elt.location}}</small><br>

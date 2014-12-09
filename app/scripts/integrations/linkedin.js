@@ -17,9 +17,10 @@ angular.module('app')
       }
     });
   };
-  service.scrape = function(backendUrl, startUrl, ignoreUrls){
-    // TODO : ignoreUrls !!!
-    return $http.get(backendUrl+'/api/v1/scrapers/linkedin/profiles/related?startUrl='+encodeURI(startUrl)+'&max=20').then(function(result){
+  service.scrape = function(backendUrl, startUrl, _ignoreUrls){
+    var ignoreUrls = _ignoreUrls || [];
+    console.log('ignoreUrls', ignoreUrls);
+    return $http.post(backendUrl+'/api/v1/scrapers/linkedin/profiles/related?startUrl='+encodeURI(startUrl)+'&max=20', {ignore: ignoreUrls}).then(function(result){
       if(result && result.data && result.data.data && result.data.data.scraped){
         return result.data.data.scraped;
       }
@@ -53,8 +54,29 @@ angular.module('app')
     data.scraper.startUrl = startUrl;
     data.scraper.scraping = true;
     delete data.scraper.error;
-    LinkedinSrv.scrape(data.user.secrets.linkedinScraperUrl.value, startUrl).then(function(results){
-      data.scraper.results = data.scraper.results.concat(results);
+    var ignoreUrls = [];
+    for(var i in data.contacts){
+      if(data.contacts[i].social && data.contacts[i].social.linkedin && data.contacts[i].social.linkedin.url){
+        ignoreUrls.push(data.contacts[i].social.linkedin.url);
+        if(data.contacts[i].social.linkedin.urls){
+          for(var j in data.contacts[i].social.linkedin.urls){
+            ignoreUrls.push(data.contacts[i].social.linkedin.urls[j]);
+          }
+        }
+      }
+    }
+    for(var k in data.scraper.results){
+      if(data.scraper.results[k].url){
+        ignoreUrls.push(data.scraper.results[k].url);
+      }
+    }
+    ignoreUrls = _.uniq(ignoreUrls);
+    LinkedinSrv.scrape(data.user.secrets.linkedinScraperUrl.value, startUrl, ignoreUrls).then(function(results){
+      for(var i in results){
+        if(!_.find(data.scraper.results, {id: results[i].id})){
+          data.scraper.results.push(results[i]);
+        }
+      }
       data.scraper.scraping = false;
     }, function(err){
       console.log('err', err);
