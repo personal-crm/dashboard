@@ -70,7 +70,7 @@ angular.module('app')
   fn.addToTargets = function(profile){
     if(!profile._meta){ profile._meta = {}; }
     profile._meta.loading = true;
-    ContactSrv.addSocialProfile({status: 'target'}, 'linkedin', profile).then(function(saved){
+    ContactSrv.addSocialProfile({active: true, status: 'target'}, 'linkedin', profile).then(function(saved){
       profile._meta.saved = saved;
       profile._meta.added = true;
       delete profile._meta.loading;

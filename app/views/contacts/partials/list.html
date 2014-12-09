@@ -12,19 +12,25 @@
       <table class="table table-hover">
         <thead>
           <tr>
+            <th class="no-select" ng-click="fn.toggleAll()"><i class="fa" ng-class="{'fa-square-o': fn.isNoneSelected(), 'fa-check-square-o': fn.isAllSelected(), 'fa-minus-square-o': fn.isSomeSelected()}"></i></th>
             <th sort="crud.data.currentSort" name="status" ng-click="crud.fn.sort('status')">Status</th>
-            <th sort="crud.data.currentSort" name="firstName" ng-click="crud.fn.sort('firstName')">First Name</th>
-            <th sort="crud.data.currentSort" name="lastName" ng-click="crud.fn.sort('lastName')">Last Name</th>
+            <th sort="crud.data.currentSort" name="lastName" ng-click="crud.fn.sort('lastName')">Name</th>
             <th sort="crud.data.currentSort" name="email" ng-click="crud.fn.sort('email')">Email</th>
             <th sort="crud.data.currentSort" name="accountId" ng-click="crud.fn.sort('accountId')">Account</th>
             <th>Social</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="elt in filtered = (crud.data.elts | filter:search)" ng-click="crud.fn.toggle(elt)" ng-class="{active: crud.data.selectedElt && elt.objectId === crud.data.selectedElt.objectId}">
-            <td><span class="label" ng-class="{'label-danger': elt.status === 'target', 'label-info': elt.status === 'contact', 'label-warning': elt.status === 'prospect', 'label-success': elt.status === 'client'}">{{elt.status}}</span></td>
-            <td>{{elt.firstName}}</td>
-            <td>{{elt.lastName}}</td>
+          <tr ng-repeat="elt in filtered = (crud.data.elts | filter:search)" ng-click="fn.toggleElt(elt)" ng-class="{active: crud.data.selectedElt && elt.objectId === crud.data.selectedElt.objectId}">
+            <td class="no-select" style="min-width: 33px;"><i class="fa {{fn.isSelected(elt) ? 'fa-check-square-o' : 'fa-square-o'}}"></i></td>
+            <td>
+              <span class="label" ng-class="{'label-danger': elt.status === 'target', 'label-info': elt.status === 'contact', 'label-warning': elt.status === 'prospect', 'label-success': elt.status === 'client'}">
+                <i class="fa fa-circle" ng-show="elt.active"></i>
+                <i class="fa fa-circle-o" ng-show="!elt.active"></i>
+                {{elt.status}}
+              </span>
+            </td>
+            <td><img ng-src="{{elt.image}}" style="height: 34px; margin-top: -8px; margin-bottom: -8px;"> {{elt.firstName}} {{elt.lastName}}</td>
             <td><a href="mailto:{{elt.email}}">{{elt.email}}</a></td>
             <td><account-name id="elt.accountId"></account-name></td>
             <td>
