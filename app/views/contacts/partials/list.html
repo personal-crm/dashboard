@@ -12,7 +12,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="no-select" ng-click="fn.toggleAll()"><i class="fa" ng-class="{'fa-square-o': fn.isNoneSelected(), 'fa-check-square-o': fn.isAllSelected(), 'fa-minus-square-o': fn.isSomeSelected()}"></i></th>
+            <th class="no-select" ng-click="crud.fn.toggleAll()"><i class="fa" ng-class="{'fa-square-o': crud.fn.isNoneSelected(), 'fa-check-square-o': crud.fn.isAllSelected(), 'fa-minus-square-o': crud.fn.isSomeSelected()}"></i></th>
             <th sort="crud.data.currentSort" name="status" ng-click="crud.fn.sort('status')">Status</th>
             <th></th>
             <th sort="crud.data.currentSort" name="lastName" ng-click="crud.fn.sort('lastName')">Name</th>
@@ -22,8 +22,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="elt in filtered = (crud.data.elts | filter:search)" ng-click="fn.toggleElt(elt)" ng-class="{active: crud.data.selectedElt && elt.objectId === crud.data.selectedElt.objectId}">
-            <td class="no-select" style="min-width: 33px;"><i class="fa {{fn.isSelected(elt) ? 'fa-check-square-o' : 'fa-square-o'}}"></i></td>
+          <tr ng-repeat="elt in filtered = (crud.data.elts | filter:search)" ng-click="crud.fn.toggle(elt)" ng-class="{active: crud.data.selectedElt && elt.objectId === crud.data.selectedElt.objectId}">
+            <td class="no-select" style="min-width: 33px;"><i class="fa {{crud.fn.isSelected(elt) ? 'fa-check-square-o' : 'fa-square-o'}}"></i></td>
             <td>
               <span class="label" ng-class="{'label-danger': elt.status === 'target', 'label-info': elt.status === 'contact', 'label-warning': elt.status === 'prospect', 'label-success': elt.status === 'client'}">
                 <i class="fa fa-circle" ng-show="elt.active"></i>

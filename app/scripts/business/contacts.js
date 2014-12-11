@@ -64,33 +64,6 @@ angular.module('app')
   AccountSrv.getAll().then(function(accounts){
     data.accounts = accounts;
   });
-  data.selectedEls = [];
-
-  fn.isSelected =     function(elt) { return data.selectedEls.indexOf(elt) >= 0;                                                                                                                };
-  fn.isNoneSelected = function()    { return data.selectedEls.length === 0;                                                                                                                     };
-  fn.isSomeSelected = function()    { return $scope.crud && $scope.crud.data && $scope.crud.data.elts && 0 < data.selectedEls.length && data.selectedEls.length < $scope.crud.data.elts.length; };
-  fn.isAllSelected =  function()    { return $scope.crud && $scope.crud.data && $scope.crud.data.elts && data.selectedEls.length === $scope.crud.data.elts.length;                              };
-  fn.toggleElt = function(elt){
-    $scope.crud.fn.toggle(elt);
-    var index = data.selectedEls.indexOf(elt);
-    if(index >= 0){
-      data.selectedEls.splice(index, 1);
-    } else {
-      data.selectedEls.push(elt);
-    }
-  };
-  fn.toggleAll = function(){
-    if($scope.crud && $scope.crud.data && $scope.crud.data.elts){
-      var allElts = $scope.crud.data.elts;
-      if(fn.isNoneSelected()){
-        for(var i in allElts){
-          data.selectedEls.push(allElts[i]);
-        }
-      } else {
-        CollectionUtils.clear(data.selectedEls);
-      }
-    }
-  };
 })
 
 .directive('contact', function(UserSrv, ContactSrv, LinkedinSrv, Utils, $http){

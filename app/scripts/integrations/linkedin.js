@@ -31,6 +31,7 @@ angular.module('app')
 })
 
 .controller('LinkedinScraperCtrl', function($scope, UserSrv, LinkedinSrv, ContactSrv){
+  'use strict';
   var data = {}, fn = {};
   $scope.data = data;
   $scope.fn = fn;
